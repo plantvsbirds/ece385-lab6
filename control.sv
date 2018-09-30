@@ -1,5 +1,5 @@
 module control (input  logic Clk, Reset, /* LoadA, LoadB, Execute, */
-                output logic Mem_Fetch_En, Mem_Read_En);
+                output logic Mem_Fetch_En, Mem_Write_En);
 
   enum logic [4:0] {REST, FETCH, DEC, EXEC, DONE} curr_state, next_state; 
 
@@ -35,7 +35,7 @@ module control (input  logic Clk, Reset, /* LoadA, LoadB, Execute, */
           end
         endcase
    
-        Mem_Read_En = 0;
+        Mem_Write_En = 0;
         Mem_Fetch_En = 0;
         case (curr_state) 
         FETCH : begin
