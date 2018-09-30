@@ -1,4 +1,4 @@
-module cpu (input  logic Clk, Reset /* LoadA, LoadB, Execute, */);
+module main (input  logic Clk, Reset /* LoadA, LoadB, Execute, */);
   logic Mem_Fetch_En, Mem_Write_En;
 
   control c0(.*);
@@ -13,4 +13,4 @@ module cpu (input  logic Clk, Reset /* LoadA, LoadB, Execute, */);
   reg MDR (.Data_In(MDR_In), .Data_Out(MDR_Out), .*);
   logic [15:0] ST_In, ST_Out;
   reg ST (.Data_In(ST_In), .Data_Out(ST_Out), .*);
-endmodule // cpu
+endmodule // main
