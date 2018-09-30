@@ -1,5 +1,7 @@
 # lab6
 
+toplevel is main.sv
+
 ## wat im reading
 
 - PC, MAR, MDR == reg
