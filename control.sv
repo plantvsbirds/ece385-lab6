@@ -35,11 +35,11 @@ module control (input  logic Clk, Reset, /* LoadA, LoadB, Execute, */
           end
         endcase
    
-        Mem_Write_En = 0;
-        Mem_Fetch_En = 0;
+        assign Mem_Write_En = 0;
+        assign Mem_Fetch_En = 0;
         case (curr_state) 
         FETCH : begin
-          Mem_Fetch_En = 1;
+          assign Mem_Fetch_En = 1;
 		      end
         endcase
     end
