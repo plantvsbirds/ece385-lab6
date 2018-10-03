@@ -1,0 +1,6 @@
+
+State Machine - |main|control:c0|curr_state
+Name curr_state.REST curr_state.DONE curr_state.FETCH 
+curr_state.REST 0 0 0 
+curr_state.FETCH 1 0 1 
+curr_state.DONE 1 1 0 
