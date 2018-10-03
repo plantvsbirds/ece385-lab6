@@ -1,5 +1,5 @@
 module reg_16 (
-  input  logic Clk, Reset, Load,
+  input  logic Clk, Reset, Load_En,
   input  logic [15:0]  Data_In,
   output logic [15:0]  Data_Out
 );
@@ -8,7 +8,7 @@ module reg_16 (
   begin
  	 if (Reset)
 		  Data_Out <= 16'h0;
-	 else if (Load)
+	 else if (Load_En)
 		  Data_Out <= Data_In;
-	 else
+	end
 endmodule
