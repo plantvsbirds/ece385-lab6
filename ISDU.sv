@@ -34,6 +34,8 @@ module ISDU (   input logic         Clk,
 									LD_REG,
 									LD_PC,
 									LD_LED, // for PAUSE instruction
+				output logic INC_PC_En,
+				
 									
 				output logic        GatePC,
 									GateMDR,
@@ -55,15 +57,28 @@ module ISDU (   input logic         Clk,
 									Mem_WE
 				);
 
-	enum logic [3:0] {  Halted, 
-						PauseIR1, 
-						PauseIR2, 
-						S_18, 
-						S_33_1, 
-						S_33_2, 
-						S_35, 
-						S_32, 
-						S_01}   State, Next_state;   // Internal state logic
+	enum logic [10:0] {
+		Halted,
+		FETCH_MAR,
+		FETCH_MDR,
+		FETCH_MDR1,
+		FETCH_MDR2,
+		FETCH_MDR3,
+		FETCH_IR,
+		FETCH_INC_PC,
+		PauseIR1, 
+		PauseIR2,
+		Rest,
+		Rest_2
+/*
+		S_18, 
+		S_33_1, 
+		S_33_2, 
+		S_35, 
+		S_32, 
+		S_01
+*/
+		}   State, Next_state;   // Internal state logic
 		
 	always_ff @ (posedge Clk)
 	begin
@@ -109,29 +124,31 @@ module ISDU (   input logic         Clk,
 		unique case (State)
 			Halted : 
 				if (Run) 
-					Next_state = S_18;                      
-			S_18 : 
-				Next_state = S_33_1;
-			// Any states involving SRAM require more than one clock cycles.
-			// The exact number will be discussed in lecture.
-			S_33_1 : 
-				Next_state = S_33_2;
-			S_33_2 : 
-				Next_state = S_35;
-			S_35 : 
-				Next_state = PauseIR1;
+					Next_state = FETCH_MAR;                      
+			FETCH_MAR : 
+				Next_state = FETCH_MDR;
+			FETCH_MDR :
+				Next_state = FETCH_MDR1;
+			FETCH_MDR1 :
+				Next_state = FETCH_MDR2;
+			FETCH_MDR2 :
+				Next_state = FETCH_MDR3;
+			FETCH_MDR3 :
+				Next_state = FETCH_IR;
+				// wait
+			FETCH_IR :
+				Next_state = FETCH_INC_PC;
+			FETCH_INC_PC :
+				Next_state = Rest;
 			// PauseIR1 and PauseIR2 are only for Week 1 such that TAs can see 
 			// the values in IR.
-			PauseIR1 : 
-				if (~Continue) 
-					Next_state = PauseIR1;
-				else 
-					Next_state = PauseIR2;
-			PauseIR2 : 
+			Rest : 
 				if (Continue) 
-					Next_state = PauseIR2;
-				else 
-					Next_state = S_18;
+					Next_state = Rest_2; 
+			Rest_2 : 
+				if (~Continue) 
+					Next_state = FETCH_MAR; 
+			/*
 			S_32 : 
 				case (Opcode)
 					4'b0001 : 
@@ -147,36 +164,52 @@ module ISDU (   input logic         Clk,
 
 			// You need to finish the rest of states.....
 
-			default : ;
+			
+			*/
+			default :
+					Next_state = Halted;  
 
 		endcase
 		
 		// Assign control signals based on current state
 		case (State)
 			Halted: ;
-			S_18 : 
+			FETCH_MAR : 
 				begin 
-					GatePC = 1'b1;
+					// GatePC = 1'b1; // ??
 					LD_MAR = 1'b1;
-					PCMUX = 2'b00;
-					LD_PC = 1'b1;
+					// PCMUX = 2'b00; // ??
+					// LD_PC = 1'b1;
 				end
-			S_33_1 : 
+				/*
+			FETCH_MDR : 
 				Mem_OE = 1'b0;
-			S_33_2 : 
+				*/
+			FETCH_MDR, FETCH_MDR1, FETCH_MDR2, FETCH_MDR3 : 
 				begin 
+					LD_MAR = 1'b0;
 					Mem_OE = 1'b0;
 					LD_MDR = 1'b1;
 				end
-			S_35 : 
-				begin 
-					GateMDR = 1'b1;
+			FETCH_IR : 
+				begin
 					LD_IR = 1'b1;
 				end
+			FETCH_INC_PC : 
+				begin
+					LD_PC = 1'b1;
+				end
+				
 			PauseIR1: ;
 			PauseIR2: ;
+				/*
+			S_35 : 
+				begin 
+					GateMDR = 1'b1; // ??
+					LD_IR = 1'b1;
+				end
 			S_32 : 
-				LD_BEN = 1'b1;
+				LD_BEN = 1'b1; //?
 			S_01 : 
 				begin 
 					SR2MUX = IR_5;
@@ -187,7 +220,8 @@ module ISDU (   input logic         Clk,
 				end
 
 			// You need to finish the rest of states.....
-
+			*/
+			
 			default : ;
 		endcase
 	end 

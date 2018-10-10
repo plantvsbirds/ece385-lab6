@@ -1,0 +1,15 @@
+
+State Machine - |lab6_toplevel|slc3:my_slc|ISDU:state_controller|State
+Name State.Rest_2 State.Rest State.PauseIR2 State.PauseIR1 State.FETCH_INC_PC State.FETCH_IR State.FETCH_MDR3 State.FETCH_MDR2 State.FETCH_MDR1 State.FETCH_MDR State.FETCH_MAR State.Halted 
+State.Halted 0 0 0 0 0 0 0 0 0 0 0 0 
+State.FETCH_MAR 0 0 0 0 0 0 0 0 0 0 1 1 
+State.FETCH_MDR 0 0 0 0 0 0 0 0 0 1 0 1 
+State.FETCH_MDR1 0 0 0 0 0 0 0 0 1 0 0 1 
+State.FETCH_MDR2 0 0 0 0 0 0 0 1 0 0 0 1 
+State.FETCH_MDR3 0 0 0 0 0 0 1 0 0 0 0 1 
+State.FETCH_IR 0 0 0 0 0 1 0 0 0 0 0 1 
+State.FETCH_INC_PC 0 0 0 0 1 0 0 0 0 0 0 1 
+State.PauseIR1 0 0 0 1 0 0 0 0 0 0 0 1 
+State.PauseIR2 0 0 1 0 0 0 0 0 0 0 0 1 
+State.Rest 0 1 0 0 0 0 0 0 0 0 0 1 
+State.Rest_2 1 0 0 0 0 0 0 0 0 0 0 1 

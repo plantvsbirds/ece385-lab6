@@ -13,9 +13,14 @@ module lab6_toplevel( input logic [15:0] S,
                       output logic [6:0] HEX0, HEX1, HEX2, HEX3, HEX4, HEX5, HEX6, HEX7,
                       output logic CE, UB, LB, OE, WE,
                       output logic [19:0] ADDR,
-                      inout wire [15:0] Data);
+                      inout wire [15:0] Data,
+							 
+							 output wire [15:0] IR_Debug, PC_Debug, MAR_Debug, MDR_Debug);
 
 slc3 my_slc(.*);
+
+
+
 // Even though test memory is instantiated here, it will be synthesized into 
 // a blank module, and will not interfere with the actual SRAM.
 // Test memory is to play the role of physical SRAM in simulation.
